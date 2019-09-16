@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.skytef.rest_robot.entities.GenericRequest;
-import br.com.skytef.rest_robot.entities.RequestResource;
 import br.com.skytef.rest_robot.requestfactory.RequestBuilder;
 
 @RestController
@@ -23,12 +22,12 @@ public class Default {
 	private RequestBuilder reqbuilder;
 	
 	@RequestMapping("/post")
-	public String ativar(@RequestBody GenericRequest mapRequest) {
+	public String ativar(@RequestBody GenericRequest requestValue) {
 		
-		mapRequest.getResources().forEach(v -> System.out.println(v.getName()));
+		requestValue.getResources().forEach(v -> System.out.println(v.getName()));
 		
 		try {
-			reqbuilder =  new RequestBuilder(mapRequest);
+			reqbuilder =  new RequestBuilder(requestValue);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

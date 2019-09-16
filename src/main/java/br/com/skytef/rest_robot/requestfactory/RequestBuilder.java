@@ -29,10 +29,35 @@ public class RequestBuilder implements Serializable {
 	public RequestBuilder(GenericRequest request) throws IOException {
 		for (RequestResource recurso : request.getResources()) {
 			if(recurso.getValue().equalsIgnoreCase("@random_name")){
-				System.out.println(retrieveRandomName());
+				recurso.setValue(retrieveRandomName());
+				//System.out.println("Nome gerado: "+ recurso.getValue());
+			}else if(recurso.getValue().contains("@random_number_L_")) {
+				recurso.setValue(retriveRandomNumber(recurso.getValue()).toString());
+			//	System.out.println("Valor gerado: "+ recurso.getValue());
 			}
 		}
+		
+		request.getResources().forEach(n -> System.out.println("Recurso: "+n.getName() + " Valor: "+n.getValue()));
+		
 	}
+	
+	
+	private Object retriveRandomNumber(String value) {
+		String n = value.split("_")[3];
+//		System.out.println(n);
+		if(n.length() < 0 || n == null) {
+			return new Random().nextInt(10);
+		}else if(n.length()<= 9) {
+			return new Random().nextInt(Integer.parseInt(n));
+			
+		}else if(n.length() > 9  && n.length() <= 18) {
+			return new Random().nextLong();
+		}
+		
+		return "0";
+	}
+	
+	
 	
 	
 	private String retrieveRandomName() throws IOException {
@@ -44,21 +69,5 @@ public class RequestBuilder implements Serializable {
 		return name;
 	}
 
-	
-	
-    public  void readLineFromFile() {
-    	
-        try {
-        BufferedReader br = new BufferedReader(new FileReader("assets/data/names_brazil.csv"));
-        System.out.println(br.lines().count());
-       String thisLine = br.readLine(); 
-        System.out.println(thisLine);
-        } // end try
-       
-      catch (IOException e) {
-        System.err.println("Error: " + e);
-      }
-   } 
-	
 
 }
