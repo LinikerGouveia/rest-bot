@@ -34,11 +34,46 @@ public class RequestBuilder implements Serializable {
 			}else if(recurso.getValue().contains("@random_number_L_")) {
 				recurso.setValue(retriveRandomNumber(recurso.getValue()).toString());
 			//	System.out.println("Valor gerado: "+ recurso.getValue());
+			}else if(recurso.getValue().contains("@random_serial_M_")) {
+				recurso.setValue(retrieveRandomSerial(recurso.getValue()).toString());
+				System.out.println("Valor gerado: "+ recurso.getValue());
 			}
+			
 		}
 		
 		request.getResources().forEach(n -> System.out.println("Recurso: "+n.getName() + " Valor: "+n.getValue()));
 		
+	}
+	
+	
+	//@random_serial
+	private String retrieveRandomSerial(String value) {
+		value = value.substring(17);
+		
+		StringBuilder newValue = new StringBuilder(value);
+		
+		for (int i = 0; i < value.length(); i++) {
+			if(value.substring(i,i+1).equals("A")) {
+//				NewValue.replaceFirst("A", retrieveRandomNumber().toString());
+				newValue.setCharAt(i,  retrieveRandomLetter().charAt(0));
+			}else if(value.substring(i,i+1).equals("9")) {
+//				value.substring(i).re("9", retrieveRandomNumber().toString());
+				newValue.setCharAt(i,  retrieveRandomNumber().toString().charAt(0));
+			}
+		}
+		
+		return newValue.toString();
+		
+	}
+	
+	private Integer retrieveRandomNumber() {
+		return new Random().nextInt(9);
+	}
+	
+	private String retrieveRandomLetter() {
+		String abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		char letter = abc.charAt(new Random().nextInt(abc.length()));
+		return String.valueOf(letter);
 	}
 	
 	
