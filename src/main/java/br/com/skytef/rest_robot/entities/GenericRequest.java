@@ -9,7 +9,8 @@ public class GenericRequest implements Serializable{
 
 	private String ip;
 	private Integer port;
-	private List<RequestResource> resources;
+	
+	private List<RequestParameter> parameters;
 	
 	
 	public GenericRequest() {
@@ -20,7 +21,7 @@ public class GenericRequest implements Serializable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ip, port, resources);
+		return Objects.hash(ip, port, parameters);
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public class GenericRequest implements Serializable{
 			return false;
 		GenericRequest other = (GenericRequest) obj;
 		return Objects.equals(ip, other.ip) && Objects.equals(port, other.port)
-				&& Objects.equals(resources, other.resources);
+				&& Objects.equals(parameters, other.parameters);
 	}
 	
 	public String getIp() {
@@ -48,11 +49,25 @@ public class GenericRequest implements Serializable{
 	public void setPort(Integer port) {
 		this.port = port;
 	}
-	public List<RequestResource> getResources() {
-		return resources;
+	public List<RequestParameter> getParameters() {
+		return parameters;
 	}
-	public void setResources(List<RequestResource> resources) {
-		this.resources = resources;
+	public void setParameters(List<RequestParameter> parameters) {
+		this.parameters = parameters;
+	}
+	
+	public void buildUri() {
+		String uri = "http://";
+		uri.concat(this.ip);
+		uri.concat(":"+this.port+"/");
+		if(parameters.size() > 0 ) {
+			uri.concat("?");
+			for (RequestParameter rs : parameters) {
+				uri.concat(rs.getName());
+			}
+		}
+		
+		
 	}
 	
 	

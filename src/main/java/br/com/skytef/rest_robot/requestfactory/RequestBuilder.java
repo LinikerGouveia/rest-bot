@@ -1,22 +1,16 @@
 package br.com.skytef.rest_robot.requestfactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.stream.Stream;
+
 
 import br.com.skytef.rest_robot.entities.GenericRequest;
-import br.com.skytef.rest_robot.entities.RequestResource;
+import br.com.skytef.rest_robot.entities.RequestParameter;
 
 public class RequestBuilder implements Serializable {
 
@@ -27,21 +21,19 @@ public class RequestBuilder implements Serializable {
 	}
 	
 	public RequestBuilder(GenericRequest request) throws IOException {
-		for (RequestResource recurso : request.getResources()) {
-			if(recurso.getValue().equalsIgnoreCase("@random_name")){
-				recurso.setValue(retrieveRandomName());
-				//System.out.println("Nome gerado: "+ recurso.getValue());
-			}else if(recurso.getValue().contains("@random_number_L_")) {
-				recurso.setValue(retriveRandomNumber(recurso.getValue()).toString());
-			//	System.out.println("Valor gerado: "+ recurso.getValue());
-			}else if(recurso.getValue().contains("@random_serial_M_")) {
-				recurso.setValue(retrieveRandomSerial(recurso.getValue()).toString());
-				System.out.println("Valor gerado: "+ recurso.getValue());
+		for (RequestParameter parameter : request.getParameters()) {
+			if(parameter.getValue().equalsIgnoreCase("@random_name")){
+				parameter.setValue(retrieveRandomName());
+			}else if(parameter.getValue().contains("@random_number_L_")) {
+				parameter.setValue(retriveRandomNumber(parameter.getValue()).toString());
+			}else if(parameter.getValue().contains("@random_serial_M_")) {
+				parameter.setValue(retrieveRandomSerial(parameter.getValue()).toString());
+				System.out.println("Valor gerado: "+ parameter.getValue());
 			}
 			
 		}
 		
-		request.getResources().forEach(n -> System.out.println("Recurso: "+n.getName() + " Valor: "+n.getValue()));
+		request.getParameters().forEach(n -> System.out.println("Parametro: "+n.getName() + " Valor: "+n.getValue()));
 		
 	}
 	
@@ -54,16 +46,12 @@ public class RequestBuilder implements Serializable {
 		
 		for (int i = 0; i < value.length(); i++) {
 			if(value.substring(i,i+1).equals("A")) {
-//				NewValue.replaceFirst("A", retrieveRandomNumber().toString());
 				newValue.setCharAt(i,  retrieveRandomLetter().charAt(0));
 			}else if(value.substring(i,i+1).equals("9")) {
-//				value.substring(i).re("9", retrieveRandomNumber().toString());
 				newValue.setCharAt(i,  retrieveRandomNumber().toString().charAt(0));
 			}
 		}
-		
 		return newValue.toString();
-		
 	}
 	
 	private Integer retrieveRandomNumber() {
@@ -79,16 +67,13 @@ public class RequestBuilder implements Serializable {
 	
 	private Object retriveRandomNumber(String value) {
 		String n = value.split("_")[3];
-//		System.out.println(n);
 		if(n.length() < 0 || n == null) {
 			return new Random().nextInt(10);
 		}else if(n.length()<= 9) {
 			return new Random().nextInt(Integer.parseInt(n));
-			
 		}else if(n.length() > 9  && n.length() <= 18) {
 			return new Random().nextLong();
 		}
-		
 		return "0";
 	}
 	
@@ -97,9 +82,7 @@ public class RequestBuilder implements Serializable {
 	
 	private String retrieveRandomName() throws IOException {
 		int num = new Random().nextInt(6000);
-		//System.out.println(num);
 		String line = Files.readAllLines(Paths.get("assets/data/names_brazil.csv"),StandardCharsets.UTF_8).get(num);
-		//System.out.println(line);
 		String name = line.split(",")[0];
 		return name;
 	}

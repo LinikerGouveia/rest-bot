@@ -24,7 +24,7 @@ public class Default {
 	@RequestMapping("/post")
 	public String ativar(@RequestBody GenericRequest requestValue) {
 		
-		requestValue.getResources().forEach(v -> System.out.println(v.getName()));
+		requestValue.getParameters().forEach(v -> System.out.println(v.getName()));
 		
 		try {
 			reqbuilder =  new RequestBuilder(requestValue);
