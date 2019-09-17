@@ -8,7 +8,6 @@ public class RequestParameter implements Serializable{
 	
 	private String name;
 	private String value;
-	private String resource;
 	
 	public RequestParameter(String name, String value) {
 		this.name = name;
@@ -47,12 +46,6 @@ public class RequestParameter implements Serializable{
 		this.value = value;
 	}
 
-	public String getResource() {
-		return resource;
-	}
 
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
 
 }

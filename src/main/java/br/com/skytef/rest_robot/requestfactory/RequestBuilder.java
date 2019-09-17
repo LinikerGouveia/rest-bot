@@ -15,7 +15,8 @@ import br.com.skytef.rest_robot.entities.RequestParameter;
 public class RequestBuilder implements Serializable {
 
 	private static final long serialVersionUID = -7740433445198920388L;
-
+	private GenericRequest request;
+	
 	public RequestBuilder() {
 		// TODO Auto-generated constructor stub
 	}
@@ -34,7 +35,7 @@ public class RequestBuilder implements Serializable {
 		}
 		
 		request.getParameters().forEach(n -> System.out.println("Parametro: "+n.getName() + " Valor: "+n.getValue()));
-		
+		this.request = request;
 	}
 	
 	
@@ -85,6 +86,10 @@ public class RequestBuilder implements Serializable {
 		String line = Files.readAllLines(Paths.get("assets/data/names_brazil.csv"),StandardCharsets.UTF_8).get(num);
 		String name = line.split(",")[0];
 		return name;
+	}
+	
+	public GenericRequest getBuiltRequest() {
+		return this.request;
 	}
 
 

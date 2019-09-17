@@ -9,6 +9,8 @@ public class GenericRequest implements Serializable{
 
 	private String ip;
 	private Integer port;
+	private String resource;
+
 	
 	private List<RequestParameter> parameters;
 	
@@ -49,6 +51,12 @@ public class GenericRequest implements Serializable{
 	public void setPort(Integer port) {
 		this.port = port;
 	}
+	public String getResource() {
+		return resource;
+	}
+	public void setResource(String resource) {
+		this.resource = resource;
+	}
 	public List<RequestParameter> getParameters() {
 		return parameters;
 	}
@@ -56,20 +64,20 @@ public class GenericRequest implements Serializable{
 		this.parameters = parameters;
 	}
 	
-	public void buildUri() {
+	public String buildUri() {
 		String uri = "http://";
-		uri.concat(this.ip);
-		uri.concat(":"+this.port+"/");
+		uri = uri.concat(this.ip);
+		uri = uri.concat(":"+this.port);
+		uri = uri.concat(this.resource);
 		if(parameters.size() > 0 ) {
-			uri.concat("?");
-			for (RequestParameter rs : parameters) {
-				uri.concat(rs.getName());
+			uri = uri.concat("?");
+			for (int i = 0; i < parameters.size(); i++) {
+				uri = uri.concat(parameters.get(i).getName()+"="+parameters.get(i).getValue());
+				if(i != parameters.size() - 1) {
+					uri = uri.concat("&");
+				}
 			}
 		}
-		
-		
+		return uri;
 	}
-	
-	
-
 }
