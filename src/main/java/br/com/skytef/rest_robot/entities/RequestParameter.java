@@ -9,6 +9,10 @@ public class RequestParameter implements Serializable{
 	private String name;
 	private String value;
 	
+	
+	public RequestParameter() {
+	}
+	
 	public RequestParameter(String name, String value) {
 		this.name = name;
 		this.value = value;
@@ -44,6 +48,11 @@ public class RequestParameter implements Serializable{
 
 	public void setValue(String value) {
 		this.value = value;
+	}
+	
+	public RequestParameter clone() {
+		
+		return new RequestParameter(this.name, this.value);
 	}
 
 

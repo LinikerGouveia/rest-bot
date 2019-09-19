@@ -6,6 +6,8 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -15,27 +17,45 @@ import br.com.skytef.rest_robot.entities.RequestParameter;
 public class RequestBuilder implements Serializable {
 
 	private static final long serialVersionUID = -7740433445198920388L;
-	private GenericRequest request;
+	private GenericRequest builtRequest;
 	
 	public RequestBuilder() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	public RequestBuilder(GenericRequest request) throws IOException {
+		builtRequest =  new GenericRequest();
+		builtRequest.setIp(request.getIp());
+		builtRequest.setPort(request.getPort());
+		builtRequest.setBulk(request.getBulk());
+		builtRequest.setMethod(request.getMethod());
+		builtRequest.setResource(request.getResource());
+		builtRequest.setParameters(new ArrayList<RequestParameter>());
+		
 		for (RequestParameter parameter : request.getParameters()) {
+			RequestParameter newParam = new RequestParameter();
+			newParam.setName(parameter.getName());
 			if(parameter.getValue().equalsIgnoreCase("@random_name")){
-				parameter.setValue(retrieveRandomName());
+				
+				newParam.setValue(retrieveRandomName());
 			}else if(parameter.getValue().contains("@random_number_L_")) {
-				parameter.setValue(retriveRandomNumber(parameter.getValue()).toString());
+				
+				newParam.setValue(retriveRandomNumber(parameter.getValue()).toString());
 			}else if(parameter.getValue().contains("@random_serial_M_")) {
-				parameter.setValue(retrieveRandomSerial(parameter.getValue()).toString());
-				System.out.println("Valor gerado: "+ parameter.getValue());
+				
+				newParam.setValue(retrieveRandomSerial(parameter.getValue()).toString());
+//				System.out.println("Valor gerado: "+ newParam.getValue());
+				
+			}else {
+				newParam.setValue(parameter.getValue());
 			}
 			
+			
+			builtRequest.getParameters().add(newParam);
 		}
+		//request.getParameters().forEach(n -> System.out.println("Parametro: "+n.getName() + " Valor: "+n.getValue()));
+		//this.builtRequest.getParameters().forEach(n -> System.out.println("Parametro: "+n.getName() + " Valor: "+n.getValue()));
 		
-		request.getParameters().forEach(n -> System.out.println("Parametro: "+n.getName() + " Valor: "+n.getValue()));
-		this.request = request;
 	}
 	
 	
@@ -89,7 +109,7 @@ public class RequestBuilder implements Serializable {
 	}
 	
 	public GenericRequest getBuiltRequest() {
-		return this.request;
+		return this.builtRequest;
 	}
 
 

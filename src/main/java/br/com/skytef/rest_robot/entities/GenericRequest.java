@@ -6,26 +6,22 @@ import java.util.Objects;
 
 public class GenericRequest implements Serializable{
 	private static final long serialVersionUID = 1L;
-
 	private String ip;
 	private Integer port;
 	private String resource;
-
+	private String method;
+	private Integer bulk ;
+	private String pattern;
 	
 	private List<RequestParameter> parameters;
 	
-	
-	public GenericRequest() {
-		// TODO Auto-generated constructor stub
-	}
-	
 
-
+	
+	
 	@Override
 	public int hashCode() {
-		return Objects.hash(ip, port, parameters);
+		return Objects.hash(bulk, ip, method, parameters, pattern, port, resource);
 	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -35,8 +31,9 @@ public class GenericRequest implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		GenericRequest other = (GenericRequest) obj;
-		return Objects.equals(ip, other.ip) && Objects.equals(port, other.port)
-				&& Objects.equals(parameters, other.parameters);
+		return Objects.equals(bulk, other.bulk) && Objects.equals(ip, other.ip) && Objects.equals(method, other.method)
+				&& Objects.equals(parameters, other.parameters) && Objects.equals(pattern, other.pattern)
+				&& Objects.equals(port, other.port) && Objects.equals(resource, other.resource);
 	}
 	
 	public String getIp() {
@@ -56,6 +53,24 @@ public class GenericRequest implements Serializable{
 	}
 	public void setResource(String resource) {
 		this.resource = resource;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public void setMethod(String method) {
+		this.method = method;
+	}
+	public Integer getBulk() {
+		return bulk;
+	}
+	public void setBulk(Integer bulk) {
+		this.bulk = bulk;
+	}
+	public String getPattern() {
+		return pattern;
+	}
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
 	}
 	public List<RequestParameter> getParameters() {
 		return parameters;
@@ -79,5 +94,22 @@ public class GenericRequest implements Serializable{
 			}
 		}
 		return uri;
+	}
+
+	@Override
+	public String toString() {
+		return "GenericRequest [ip=" + ip + ", port=" + port + " method=" + method
+				+ ", bulk=" + bulk + " pattern=" + pattern + ", parameters=" + parameters + "]";
+	}
+
+	public GenericRequest clone() {
+		GenericRequest cloned = new GenericRequest();
+		cloned.ip = this.ip ;
+		cloned.port = this.port;
+		cloned.resource =  this.resource;
+		cloned.parameters = this.parameters;
+		cloned.bulk =  this.bulk;
+		cloned.method =  this.method;
+		return cloned;
 	}
 }
