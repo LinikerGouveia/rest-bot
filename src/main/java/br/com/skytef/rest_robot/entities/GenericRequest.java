@@ -4,13 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.omg.CORBA.Request;
-import org.springframework.web.bind.annotation.RequestBody;
 public class GenericRequest implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String ip;
@@ -96,9 +89,6 @@ public class GenericRequest implements Serializable{
 	
 	public String queryString() {
 		String uri = "";
-//		uri = uri.concat(this.ip);
-//		uri = uri.concat(":"+this.port);
-//		uri = uri.concat(this.resource);
 		if(parameters.size() > 0 ) {
 			uri = uri.concat("?");
 			for (int i = 0; i < parameters.size(); i++) {
@@ -113,7 +103,6 @@ public class GenericRequest implements Serializable{
 	
 	public String queryPath() {
 
-			HttpClient httpClient = HttpClientBuilder.create().build(); //Use this instead 
 			StringBuilder paramJson =  new StringBuilder();
 			paramJson.append("{");
 			for (RequestParameter param : this.parameters) {
