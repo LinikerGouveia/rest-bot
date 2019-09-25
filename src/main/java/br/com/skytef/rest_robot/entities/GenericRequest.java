@@ -12,7 +12,10 @@ public class GenericRequest implements Serializable{
 	private String method;
 	private Integer bulk ;
 	private String pattern;
+	private Integer delay;
 	
+	
+
 	private List<RequestParameter> parameters;
 	
 
@@ -71,6 +74,12 @@ public class GenericRequest implements Serializable{
 	}
 	public void setPattern(String pattern) {
 		this.pattern = pattern;
+	}
+	public Integer getDelay() {
+		return delay;
+	}
+	public void setDelay(Integer delay) {
+		this.delay = delay;
 	}
 	public List<RequestParameter> getParameters() {
 		return parameters;

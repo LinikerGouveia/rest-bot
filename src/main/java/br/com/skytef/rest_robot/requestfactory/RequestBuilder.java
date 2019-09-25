@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import br.com.skytef.rest_robot.entities.GenericRequest;
@@ -29,26 +30,34 @@ public class RequestBuilder implements Serializable {
 		builtRequest.setMethod(request.getMethod());
 		
 		builtRequest.setResource(factoryResourcePath(request.getResource()));
+		builtRequest.setParameters(factoryParameters(request.getParameters()));
 		
 		
-		builtRequest.setParameters(new ArrayList<RequestParameter>());
-		for (RequestParameter parameter : request.getParameters()) {
-			RequestParameter newParam = new RequestParameter();
-			newParam.setName(parameter.getName());
-			if (parameter.getValue().equalsIgnoreCase("@random_name")) {
-				newParam.setValue(retrieveRandomName());
-			} else if (parameter.getValue().contains("@random_number_L_")) {
-				newParam.setValue(retriveRandomNumber(parameter.getValue()).toString());
-			} else if (parameter.getValue().contains("@random_serial_M_")) {
-				newParam.setValue(retrieveRandomSerial(parameter.getValue()).toString());
-			} else {
-				newParam.setValue(parameter.getValue());
-			}
-
-			builtRequest.getParameters().add(newParam);
-		}
 	}
 	
+	
+	private List<RequestParameter> factoryParameters(List<RequestParameter> params) throws IOException{
+		List<RequestParameter> builtParams = new ArrayList<RequestParameter>();
+		if (params !=  null) {
+			for (RequestParameter parameter : params) {
+				RequestParameter newParam = new RequestParameter();
+				newParam.setName(parameter.getName());
+				if (parameter.getValue().equalsIgnoreCase("@random_name")) {
+					newParam.setValue(retrieveRandomName());
+//				} else if (parameter.getValue().contains("@random_companyName")) {
+//					newParam.setValue(retrieveRandomCompanyName());
+				} else if (parameter.getValue().contains("@random_number_L_")) {
+					newParam.setValue(retriveRandomNumber(parameter.getValue()).toString());
+				} else if (parameter.getValue().contains("@random_serial_M_")) {
+					newParam.setValue(retrieveRandomSerial(parameter.getValue()).toString());
+				} else {
+					newParam.setValue(parameter.getValue());
+				}
+				builtParams.add(newParam);
+			}
+		}
+		return builtParams;
+	}
 	
 	
 	private String factoryResourcePath(String resource){
@@ -73,7 +82,7 @@ public class RequestBuilder implements Serializable {
 			}
 		}
 		newResource = newResource.substring(0,newResource.length()-1);
-		System.out.println("recurso pós fatorado: " + newResource);
+		//System.out.println("recurso pós fatorado: " + newResource);
 		
 		
 		
@@ -123,6 +132,15 @@ public class RequestBuilder implements Serializable {
 		String line = Files.readAllLines(Paths.get("assets/data/names_brazil.csv"), StandardCharsets.UTF_8).get(num);
 		String name = line.split(",")[0];
 		return name;
+	}
+	
+	private String retrieveRandomCompanyName() throws IOException {
+		int num = new Random().nextInt(285);
+		String line = Files.readAllLines(Paths.get("assets/data/companyName_brazil.csv"), StandardCharsets.UTF_8).get(num);
+		line = line.replaceAll("\"","");
+		return line;
+		// name = line.split(",")[0];
+		//return name;
 	}
 
 	public GenericRequest getBuiltRequest() {
