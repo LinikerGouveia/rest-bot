@@ -20,24 +20,14 @@ public class Default extends DoRequest {
 
 	@RequestMapping("/dorequest")
 	public List<ResponseDTO> doReq(@RequestBody GenericRequest requestValue) {
-
-		//requestValue.getParameters().forEach(v -> System.out.println(v.getName()));
-		//System.out.println(requestValue.toString());
 		List<ResponseDTO> responseList = new ArrayList<ResponseDTO>();
-
 		try {
 			for (int i = 0; i < requestValue.getBulk(); i++) {
-
 				ResponseDTO newResponse = new ResponseDTO();
 				reqbuilder = new RequestBuilder(requestValue);
-				//System.out.println("Montagem completa: " + reqbuilder.getBuiltRequest().getUri()
-				//		+ reqbuilder.getBuiltRequest().queryString());
-				//System.out.println(reqbuilder.getBuiltRequest().toString());
 				TimeUnit.MILLISECONDS.sleep(requestValue.getDelay());
 				HttpResponse response = DoRequest(reqbuilder.getBuiltRequest());
-
 				String responseString = responseToString(response);
-
 				newResponse.setIndex(i);
 				newResponse.setResponse(responseString);
 				responseList.add(newResponse);
@@ -50,5 +40,4 @@ public class Default extends DoRequest {
 		}
 		return responseList;
 	}
-
 }

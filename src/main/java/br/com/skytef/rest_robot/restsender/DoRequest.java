@@ -40,18 +40,12 @@ public class DoRequest {
 		try {
 			HttpClient httpClient = HttpClientBuilder.create().build(); // Use this instead
 			HttpPost request = new HttpPost(gr.getUri() + gr.queryString());
-
 			HttpResponse response = httpClient.execute(request);
-
 			return response;
-
 		} catch (Exception ex) {
 			System.out.println("Erro Post");
 			return null;
 
-		} finally {
-			// Deprecated
-			// httpClient.getConnectionManager().shutdown();
 		}
 	}
 
@@ -61,16 +55,11 @@ public class DoRequest {
 			HttpGet request = new HttpGet(gr.getUri() + gr.queryString());
 			request.addHeader("content-type", "application/json");
 			HttpResponse response = httpClient.execute(request);
-
 			return response;
-
 		} catch (Exception ex) {
 			System.out.println("Erro Post");
 			return null;
 
-		} finally {
-			// Deprecated
-			// httpClient.getConnectionManager().shutdown();
 		}
 	}
 
