@@ -14,7 +14,6 @@ public class GenericRequest implements Serializable{
 	private String pattern;
 	private Integer delay;
 	
-	
 
 	private List<RequestParameter> parameters;
 	

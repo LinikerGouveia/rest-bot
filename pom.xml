@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.skytef</groupId>
 	<artifactId>rest_robot</artifactId>
-	<version>0.9.0</version>
+	<version>0.9.1</version>
 	<name>rest_robot</name>
 	<description>Rest robot for testing rest services</description>
 
